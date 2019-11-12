@@ -8,4 +8,4 @@ set of helper functions for the GY-521 MPU
 
 void mpu_setup();
 void mpu_print_pretty();
-void mpu_print();
+int16_t* mpu_get();

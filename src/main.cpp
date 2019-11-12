@@ -4,9 +4,11 @@
 #include <Arduino.h>
 #include <Ticker.h>
 
-Ticker print_mpu(mpu_print, 1000);
-
-const int data = 123;
+#define END_STREAM 000000
+bool status;
+int16_t incomingData[6];
+int i = 0;
+bool complete_set;
 
 void setup() {
     Serial.begin(9600);
@@ -17,16 +19,30 @@ void setup() {
 
 }
 
+
 void loop() {
     if( NODE_ID == 00) {
+        complete_set = false;
         if(network_avaiable()) {
-            uint16_t incomingData = network_read();
-            Serial.println(incomingData);
+            incomingData[i] = network_read();
+            i = (i+1) % 6;
+            if(i == 0) {
+                complete_set = true;
+            }
+        }
+        if(complete_set) {
+            Serial.println();
+            for (int i = 0; i < 6; i++) {
+                Serial.print(incomingData[i]);
+                Serial.print(",");
+            }
         }
     } else {
-        if(millis() % 1000 == 0){
-            bool status = network_write(data);
-            Serial.println(status);
+        if(millis() % 100 == 0){
+            int16_t* p = mpu_get();
+            for (int i = 0; i < 6; i++) {
+                status = network_write(*(p+i));
+            }
         }
     }
 }

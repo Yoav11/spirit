@@ -11,6 +11,6 @@ set of helper functions for the nrf-24 wireless module
 #define NODE_ID 00
 
 void network_connect();
-uint16_t network_read();
-bool network_write(int data);
+int16_t network_read();
+bool network_write(int16_t data);
 bool network_avaiable();
