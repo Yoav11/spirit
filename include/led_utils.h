@@ -3,6 +3,6 @@ utility functions for leds
 */
 #include <Arduino.h>
 
-#define LED_BUILTIN 13
+#define BLUE_LED 2
 
-void blink_builtin();
+void blink_blue();
